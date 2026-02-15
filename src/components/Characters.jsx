@@ -31,7 +31,20 @@ const Characters = () => {
       </p>
       <div className="mx-auto max-w-7xl">
         <ListCharacter characters={allCharacters} />
-        <div className="flex">
+
+        <div className="flex gap-2 flex-wrap justify-center mt-6">
+          {Array.from({ length: totalPages }).map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setPage(index + 1)}
+              className={` ${page === index + 1 ? "bg-teal-800" : "bg-teal-700"} hover:bg-teal-600 rounded-2xl h-10 w-10 inline-block cursor-pointer text-white font-semibold`}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
+
+        {/* <div className="flex">
           {page > 1 && (
             <button
               onClick={() => setPage(page - 1)}
@@ -49,7 +62,7 @@ const Characters = () => {
               Next <ArrowRight className="w-6 h-6" />
             </button>
           )}
-        </div>
+        </div> */}
       </div>
     </section>
   );
