@@ -23,10 +23,10 @@ const Characters = () => {
 
   return (
     <section className="p-4 py-5">
-      <h1 className="pb-2 text-center text-3xl font-semibold text-slate-800 dark:text-slate-200">
+      <h1 className="pb-2 text-center text-3xl font-semibold text-slate-800 ">
         Rick and Morty
       </h1>
-      <p className="mb-6 text-center text-slate-700 dark:text-slate-400">
+      <p className="mb-6 text-center text-slate-700 ">
         Encuentra tu personaje favorito
       </p>
       <div className="mx-auto max-w-7xl">
@@ -37,7 +37,7 @@ const Characters = () => {
             <button
               key={index}
               onClick={() => setPage(index + 1)}
-              className={` ${page === index + 1 ? "bg-teal-800" : "bg-teal-700"} hover:bg-teal-600 rounded-2xl h-10 w-10 inline-block cursor-pointer text-white font-semibold`}
+              className={` ${page === index + 1 ? "bg-teal-800" : "bg-teal-700 hover:bg-teal-600"}  rounded-2xl h-10 w-10 inline-block cursor-pointer text-white font-semibold`}
             >
               {index + 1}
             </button>
