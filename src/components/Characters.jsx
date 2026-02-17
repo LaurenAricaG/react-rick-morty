@@ -3,11 +3,19 @@ import { useEffect, useState } from "react";
 import { ListCharacter } from "./ListCharacter";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
+const PER_PAGE = 10;
+
 const Characters = () => {
   const [allCharacters, setAllCharacters] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
 
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
+  const [group, setGroup] = useState(1);
+
+  const group_view = Math.ceil(totalPages / PER_PAGE);
+
+  const start = (group - 1) * PER_PAGE + 1;
+  const end = Math.min(group * PER_PAGE, totalPages);
 
   useEffect(() => {
     axios
@@ -33,36 +41,45 @@ const Characters = () => {
         <ListCharacter characters={allCharacters} />
 
         <div className="flex gap-2 flex-wrap justify-center mt-6">
-          {Array.from({ length: totalPages }).map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setPage(index + 1)}
-              className={` ${page === index + 1 ? "bg-teal-800" : "bg-teal-700 hover:bg-teal-600"}  rounded-2xl h-10 w-10 inline-block cursor-pointer text-white font-semibold`}
-            >
-              {index + 1}
-            </button>
-          ))}
+          <button
+            onClick={() => setGroup((g) => Math.max(g - 1, 1))}
+            disabled={group === 1}
+            className="cursor-pointer bg-blue-600 rounded-2xl h-10 w-10 text- flex items-center justify-center text-white font-semibold"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </button>
+
+          {Array.from({ length: end - start + 1 }, (_, i) => {
+            const value = start + i;
+            return (
+              <button
+                key={value}
+                onClick={() => setPage(value)} // 👈 SOLO cambia page
+                className={`${
+                  page === value
+                    ? "bg-teal-800"
+                    : "bg-teal-700 hover:bg-teal-600"
+                } rounded-2xl h-10 w-10 text-white font-semibold cursor-pointer`}
+              >
+                {value}
+              </button>
+            );
+          })}
+
+          <button
+            onClick={() => setGroup((g) => (g < group_view ? g + 1 : g))}
+            disabled={group === group_view}
+            className="cursor-pointer bg-blue-600 rounded-2xl h-10 w-10 text- flex items-center justify-center text-white font-semibold"
+          >
+            <ArrowRight />
+          </button>
         </div>
 
-        {/* <div className="flex">
-          {page > 1 && (
-            <button
-              onClick={() => setPage(page - 1)}
-              className="bg-blue-500 text-white px-4 py-2 rounded-md flex items-center gap-1 cursor-pointer"
-            >
-              <ArrowLeft className="w-6 h-6" /> Prev
-            </button>
-          )}
-
-          {page < totalPages && (
-            <button
-              onClick={() => setPage(page + 1)}
-              className="ml-auto bg-blue-500 text-white px-4 py-2 rounded-md flex items-center gap-1 cursor-pointer"
-            >
-              Next <ArrowRight className="w-6 h-6" />
-            </button>
-          )}
-        </div> */}
+        <div className="flex justify-center mt-2">
+          <span className="text-sm font-semibold">
+            Página {group} de {group_view}
+          </span>
+        </div>
       </div>
     </section>
   );
